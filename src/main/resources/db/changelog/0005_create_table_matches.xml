@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                   https://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd">
+
+    <changeSet id="0005_1" author="Matt">
+        <createTable tableName="matches">
+            <column name="id" type="BIGINT">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="utc_datetime" type="DATETIME"/>
+            <column name="match_status" type="VARCHAR(50)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="matchday" type="int"/>
+            <column name="stage" type="VARCHAR(255)"/>
+            <column name="last_updated" type="DATETIME"/>
+            <column name="competition_id" type="BIGINT">
+                <constraints foreignKeyName="fk_matches_competition_id"
+                             referencedTableName="competitions"
+                             referencedColumnNames="id"/>
+            </column>
+            <column name="season_id" type="BIGINT">
+                <constraints foreignKeyName="fk_matches_season_id"
+                             referencedTableName="seasons"
+                             referencedColumnNames="id"/>
+            </column>
+            <column name="home_team_id" type="BIGINT">
+                <constraints foreignKeyName="fk_matches_home_team_id"
+                             referencedTableName="teams"
+                             referencedColumnNames="id"/>
+            </column>
+            <column name="away_team_id" type="BIGINT">
+                <constraints foreignKeyName="fk_matches_away_team_id"
+                             referencedTableName="teams"
+                             referencedColumnNames="id"/>
+            </column>
+            <column name="score_id" type="BIGINT">
+                <constraints foreignKeyName="fk_matches_score_id"
+                             referencedTableName="scores"
+                             referencedColumnNames="id"/>
+            </column>
+        </createTable>
+
+    </changeSet>
+</databaseChangeLog>

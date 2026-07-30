@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="pl"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Statystyki drużyny</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="../static/styles/main.css" th:href="@{/styles/main.css}">
+    <script defer src="../static/scripts/common.js" th:src="@{/scripts/common.js}"></script>
+</head>
+<body>
+<div class="team-stats-container">
+
+    <header class="page-header">
+        <a th:href="@{/}" class="title-link">
+            <h2>⚽ Typer</h2>
+        </a>
+    </header>
+
+    <h2>Statystyki drużyny</h2>
+
+    <div class="last-matches-block">
+
+        <div class="team-stats-team-name">
+            <img src="#" th:src="${team.crest}">
+            <p th:text="${team.name}">Nazwa drużyny</p>
+        </div>
+
+        <div class="team-stats-mathes-table">
+
+            <table class="responsive-table last-matches-table">
+                <tbody>
+                <tr th:each="match : ${lastMatchesStat.lastMatchesTeam}"
+                    class="last-match-row">
+
+                    <td th:text="${#temporals.format(match.utcDate, 'dd-MM-yyyy')}" class="math-date">data</td>
+                    <td th:text="${match.homeTeam.name}"
+                        th:classappend="${match.homeTeam.equals(team) ? 'bold' : ''}"></td>
+
+                    <td th:utext="${match.score.regularTime.home == null ? match.score.fullTime.home :
+                (match.score.penalties.home == null ? match.score.fullTime.home + ' <span class=&quot;extra-time&quot;>dogr.</span>' :
+                 match.score.regularTime.home + ' (' + match.score.fullTime.home + ')')}"
+                        th:classappend="${@compareService.matchResultVeryfi(team, match).name().toLowerCase()}"></td>
+
+                    <td th:utext="${match.score.regularTime.away == null ? match.score.fullTime.away :
+                (match.score.penalties.away == null ? match.score.fullTime.away + ' <span class=&quot;extra-time&quot;>dogr.</span>' :
+                match.score.regularTime.away + ' (' + match.score.fullTime.away + ')')}"
+                        th:classappend="${@compareService.matchResultVeryfi(team, match).name().toLowerCase()}"></td>
+
+                    <td th:text="${match.awayTeam.name}"
+                        th:classappend="${match.awayTeam.equals(team) ? 'bold' : ''}"></td>
+                    <td class="competiton-logo"> <img th:src="${match.competition.emblem}" alt="logo"> </td>
+
+                </tr>
+                </tbody>
+            </table>
+
+            <button type="button"
+                    class="show-more-matches"
+                    onclick="toggleMatches(this)">
+                Pokaż więcej
+            </button>
+
+            <div class="team-form-wrapper">
+                <span th:text="|Forma z ostatnich ${lastMatchesStat.lastResults.size()} meczów|"
+                      class="team-form-label">Forma ostatnie mecze:</span>
+
+                <div class="form-bar">
+            <span th:each="result : ${lastMatchesStat.lastResults}"
+                  class="form-dot"
+                  th:classappend="'form-' + ${#strings.toLowerCase(result.name())}">
+            </span>
+                </div>
+            </div>
+
+
+        </div>
+
+        <div class="team-stats">
+            <div class="comparison-stats-card">
+
+                <div class="stats-title">
+<!--                    <p th:text="|Staty z ostatnich ${lastMatchesStat.lastMatchesTeam.size()} meczów|">Staty z 10-->
+<!--                        meczów</p>-->
+                    <form th:action="@{/druzyny/staty}" method="get" class="matches-select-form" th:object="${teamsCompare}">
+                        <input type="hidden" name="teamStatsId" th:value="${team.id}" />
+
+                        <span>Staty z ostatnich&nbsp;</span>
+                        <select id="matchesToStats" name="matchesToStats" onchange="this.form.submit()">
+                            <option th:each="i : ${#numbers.sequence(1, @matchService.countMatchesByTeamIdMax10(team.id))}"
+                                    th:value="${i}"
+                                    th:text="${i}"
+                                    th:selected="${i == (matchesToStats == null || matchesToStats > 10?
+                                     @matchService.countMatchesByTeamIdMax10(team.id) : matchesToStats)}">
+                            </option>
+                        </select>
+                        <span>&nbsp;meczów</span>
+                        <noscript><button type="submit">Pokaż</button></noscript>
+                    </form>
+                </div>
+
+                <div class="stats-left">
+                    <p th:text="|Wygrane: ${lastMatchesStat.win}|"></p>
+                    <p th:text="|Remisy: ${lastMatchesStat.draw}|"></p>
+                    <p th:text="|Przegrane: ${lastMatchesStat.lost}|"></p>
+
+                    <p th:text="|BTTS: ${lastMatchesStat.btts} /
+                ${matchesToStats == null || matchesToStats > 10 ? lastMatchesStat.lastMatchesTeam.size() : matchesToStats} |"></p>
+                    <p th:text="|Czyste konta: ${lastMatchesStat.noGoalsConceded} /
+                ${matchesToStats == null || matchesToStats > 10  ? lastMatchesStat.lastMatchesTeam.size() : matchesToStats}|"></p>
+                </div>
+
+                <div class="stats-right">
+                    <p th:text="|Gole strzelone: ${lastMatchesStat.goalsScored}|"></p>
+                    <p th:text="|Gole stracone: ${lastMatchesStat.goalsConceded}|"></p>
+                    <p th:text="|Śr strzelonych goli: ${#numbers.formatDecimal(lastMatchesStat.goalsScoredAverage,1,1)}|"></p>
+                    <p th:text="|Śr straconych goli: ${#numbers.formatDecimal(lastMatchesStat.goalsConcededAverage,1,1)}|"></p>
+                    <p th:text="|Śr wszystkich goli: ${#numbers.formatDecimal(lastMatchesStat.goalsAverage,1,1)}|"></p>
+
+                </div>
+
+
+            </div>
+        </div>
+    </div>
+</div>
+
+</body>
+</html>

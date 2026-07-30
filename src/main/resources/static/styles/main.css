@@ -1,0 +1,854 @@
+/* ======================================================
+   RESET / BASE / VARIABLES
+====================================================== */
+:root {
+    --primary-color: #4a90e2;
+    --primary-hover: #3c7ed0;
+    --highlight-color: #eef4ff;
+    --text-dark: #2c3e50;
+    --text-muted: #666;
+    --text-light: #555;
+    --border-light: #eee;
+    --border-muted: #ddd;
+    --border-focus: #bbb;
+    --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.08);
+    --shadow-md: 0 3px 10px rgba(0, 0, 0, 0.08);
+    --shadow-lg: 0 4px 14px rgba(0, 0, 0, 0.08);
+    --shadow-xl: 0 6px 22px rgba(0, 0, 0, 0.08);
+    --radius-sm: 6px;
+    --radius-md: 8px;
+    --radius-lg: 10px;
+    --radius-xl: 14px;
+}
+
+* { box-sizing: border-box; }
+
+body {
+    margin: 0;
+    padding: 12px;
+    font-family: system-ui, -apple-system, BlinkMacSystemFont,
+    "Segoe UI", Roboto, Ubuntu, Arial, sans-serif;
+    background: #f4f6f8;
+    color: #222;
+}
+
+img { max-width: 100%; display: block; }
+
+h1, h2 {
+    text-align: center;
+    margin: 10px 0;
+}
+/* ======================================================
+   INDEX – TEAM SELECTION
+====================================================== */
+
+form {
+    max-width: 900px;
+    margin: auto;
+    background: #fff;
+    padding: 16px;
+    border-radius: var(--radius-md);
+    box-shadow: var(--shadow-lg);
+}
+
+.team-row {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 10px;
+}
+
+#suggestions {
+    background: #fff;
+    border-radius: var(--radius-sm);
+    margin-bottom: 12px;
+    box-shadow: var(--shadow-md);
+}
+
+#suggestions div, #suggestion div {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 8px 10px;
+    cursor: pointer;
+}
+
+#suggestions div:hover {
+    background: var(--highlight-color);
+}
+
+.comparison-team-button {
+    width: 100%;
+    margin-top: 20px;
+    padding: 10px;
+    font-size: 14px;
+    background: var(--primary-color);
+    border-radius: var(--radius-lg);
+}
+
+.comparison-team-button:hover {
+    background: var(--primary-hover);
+}
+
+#teamSearch,
+#teamStatsSearch {
+    width: 100%;
+    padding: 6px 14px;
+    font-size: 15px;
+    border-radius: var(--radius-md);
+}
+
+.select-competition {
+    width: 100%;
+    height: 38px;
+    padding: 0 12px;
+    font-size: 14px;
+    border-radius: var(--radius-md);
+    border: 1px solid var(--border-muted);
+    background: #fff;
+    color: #222;
+    outline: none;
+}
+
+.select-competition:focus {
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 2px rgba(74, 144, 226, 0.15);
+}
+
+.select-competition:hover {
+    border-color: var(--border-focus);
+}
+
+/* ======================================================
+   INDEX – TABLE STYLE
+====================================================== */
+
+.index-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 12px;
+    table-layout: fixed;
+}
+
+.index-table thead {
+    background: #f0f4fa;
+}
+
+.index-table th {
+    font-size: 8px;
+    text-transform: uppercase;
+    color: var(--text-muted);
+    padding: 10px 6px;
+}
+
+.index-table td {
+    padding: 10px 6px;
+    font-size: 12px;
+    border-bottom: 1px solid var(--border-light);
+}
+
+.index-table tbody tr:hover {
+    background: #f6f9ff;
+}
+
+.index-table img {
+    width: 28px;
+    margin: 0 auto;
+}
+
+/* NAZWA DRUŻYNY */
+.index-table th:nth-child(1),
+.index-table td:nth-child(1) {
+    width: 30%;
+    text-align: left;
+    padding-left: 12px;
+}
+
+/* SKRÓCONA NAZWA */
+.index-table th:nth-child(2),
+.index-table td:nth-child(2) {
+    width: 30%;
+    text-align: center;
+}
+
+/* LOGO */
+.index-table th:nth-child(3),
+.index-table td:nth-child(3) {
+    width: 25%;
+    text-align: center;
+}
+
+/* USUŃ */
+.index-table th:nth-child(4),
+.index-table td:nth-child(4) {
+    width: 15%;
+    text-align: center;
+}
+/*DESKTOP*/
+@media (min-width: 768px) {
+    .index-table th {
+        font-size: 12px;
+    }
+
+    .index-table td {
+        font-size: 14px;
+    }
+}
+
+/* ======================================================
+   INDEX – LAYOUT
+====================================================== */
+
+.index-card {
+    max-width: 1000px;
+    margin: 10px auto;
+    background: #fff;
+    padding: 20px;
+    border-radius: var(--radius-xl);
+    box-shadow: var(--shadow-xl);
+}
+
+.index-card h1 {
+    font-size: 20px;
+    margin-bottom: 10px;
+    text-align: center;
+    color: var(--text-dark);
+}
+
+/* ======================================================
+   DESKTOP
+====================================================== */
+
+@media (min-width: 900px) {
+
+    .index-card {
+        padding: 26px 32px;
+    }
+
+    .index-card h1 {
+        font-size: 22px;
+    }
+}
+
+/* ======================================================
+   BUTTONS / INPUTS
+====================================================== */
+button {
+    padding: 10px 16px;
+    border-radius: var(--radius-sm);
+    border: none;
+    cursor: pointer;
+    background: transparent;
+    color: #fff;
+    font-size: 14px;
+}
+
+.show-more-matches {
+    width: 100%;
+    margin: 8px 0;
+    padding: 10px;
+    border-radius: var(--radius-md);
+    background: var(--highlight-color);
+    color: var(--text-dark);
+}
+
+/* ======================================================
+   TABLES (GLOBAL)
+====================================================== */
+.responsive-table {
+    width: 100%;
+    border-collapse: collapse;
+    background: #fff;
+    border-radius: var(--radius-md);
+    overflow: hidden;
+    box-shadow: var(--shadow-sm);
+}
+
+.responsive-table td,
+.responsive-table th {
+    padding: 8px 6px;
+    text-align: center;
+    font-size: 13px;
+}
+
+.responsive-table tr { border-bottom: 1px solid var(--border-light); }
+.responsive-table tr:last-child { border-bottom: none; }
+
+.responsive-table tbody tr:hover {
+    background-color: var(--highlight-color);
+}
+
+.responsive-table .math-date {
+    font-size: 9px;
+}
+
+/* ======================================================
+   MOBILE – SHOW MORE / HIDE
+====================================================== */
+
+.last-matches-table .last-match-row:nth-child(n+6) {
+    display: none;
+}
+
+.last-matches-table.expanded .last-match-row {
+    display: table-row;
+}
+
+/* ======================================================
+   RESULT COLORS
+====================================================== */
+.win, .draw, .loss, .bold { font-weight: 600; }
+.win { color: #2ecc71; }
+.draw { color: #f1c40f; }
+.loss { color: #e74c3c; }
+
+/* ======================================================
+   COMPARISON – LAYOUT
+====================================================== */
+.comparison-mathes-table {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 16px;
+    margin-bottom: 20px;
+}
+
+/* ======================================================
+   TEAM HEADER
+====================================================== */
+.comparison-teams-names {
+    display: flex;
+    flex-direction: row;        /* 🔑 ZAWSZE obok siebie */
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    margin-bottom: 12px;
+}
+
+.comparison-teams-names img {
+    width: 60px;
+    height: 60px;
+    object-fit: contain;
+}
+
+.comparison-teams-names p {
+    font-size: 18px;
+    font-weight: 600;
+}
+
+/* ======================================================
+   STATS CARD
+====================================================== */
+
+.comparison-stats-card {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 5px;
+    width: 100%;
+    background: #fff;
+    border-radius: var(--radius-md);
+    padding-bottom: 5px;
+    box-shadow: var(--shadow-sm);
+}
+
+.stats-title {
+    grid-column: 1 / -1;
+    text-align: center;
+    font-weight: 600;
+    font-size: 14px;
+}
+
+.stats-left p,
+.stats-right p {
+    margin: 1px 0;
+    font-size: 11px;
+    text-align: center;
+}
+
+@media (min-width: 769px) {
+    .stats-left p,
+    .stats-right p {
+        font-size: 13px;
+    }
+}
+
+/* ======================================================
+   FORM
+====================================================== */
+.team-form-wrapper {
+    grid-column: 1 / -1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+    padding-top: 15px;
+    padding-bottom: 10px;
+    border-top: 1px solid var(--border-light);
+    font-size: 13px;
+}
+
+.form-bar { display: flex; gap: 6px; }
+
+.form-dot {
+    width: 14px;
+    height: 14px;
+    border-radius: 50%;
+}
+
+.form-win { background: #2ecc71; }
+.form-draw { background: #f1c40f; }
+.form-loss { background: #e74c3c; }
+
+/* ======================================================
+   H2H
+====================================================== */
+.comparison-H2H-stats {
+    max-width: 420px;
+    margin: 0 auto 28px;
+    padding: 16px 18px;
+    background: #fff;
+    border-radius: var(--radius-md);
+    box-shadow: var(--shadow-sm);
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.h2h-title {
+    font-size: 14px;
+    text-align: center;
+    margin: 0;
+}
+
+.h2h-row {
+    display: grid;
+    grid-template-columns: auto 1fr auto;
+    align-items: center;
+    gap: 14px;
+}
+
+.comparison-H2H-stats img {
+    width: 42px;
+    height: 42px;
+    object-fit: contain;
+}
+
+.comparison-H2H-stats-details {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    text-align: center;
+}
+
+.comparison-H2H-stats-details p {
+    margin: 0;
+    font-size: 13px;
+    font-weight: 400;
+    color: #333;
+}
+
+/* tabela H2H */
+.comparison-H2H-matches {
+    max-width: 900px;
+    margin: 0 auto 16px;
+}
+
+/* ======================================================
+   DESKTOP
+====================================================== */
+@media (min-width: 769px) {
+
+    body { padding: 20px; }
+
+    .comparison-teams-names {
+        gap: 16px;
+    }
+
+    .comparison-mathes-table {
+        grid-template-columns: 1fr 1fr;
+        gap: 24px;
+        max-width: 1700px;
+        margin: 0 auto 20px;
+    }
+
+    .comparison-stats-card {
+        grid-template-columns: 1fr 1fr;
+        gap: 5px;
+        max-width: 1700px;
+        margin: 24px auto 0;
+        padding-bottom: 10px;
+    }
+
+    .responsive-table td,
+    .responsive-table th {
+        font-size: 14px;
+        padding: 10px 8px;
+    }
+
+    .comparison-H2H-matches {
+        max-width: 700px;
+    }
+
+    .comparison-H2H-stats img {
+        width: 65px;
+        height: 65px;
+    }
+}
+
+/* ======================================================
+   STANDINGS – TABLES
+   ====================================================== */
+
+/* wrapper – scroll na mobile */
+.standing-table-wrapper {
+    width: 100%;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    margin-bottom: 20px;
+}
+
+/* główna tabela */
+.standing-table {
+    width: 100%;
+    min-width: 720px;
+    table-layout: fixed;
+    border-collapse: collapse;
+    background: #fff;
+    border-radius: var(--radius-md);
+    overflow: hidden;
+    box-shadow: var(--shadow-sm);
+}
+
+/* komórki */
+.standing-table th,
+.standing-table td {
+    padding: 8px 6px;
+    text-align: center;
+    font-size: 13px;
+    white-space: nowrap;
+}
+
+.standing-table thead th {
+    background: var(--highlight-color);
+    font-weight: 600;
+}
+
+/* linie między wierszami */
+.standing-table tbody tr {
+    border-bottom: 1px solid var(--border-light);
+    transition: background-color 0.15s ease;
+}
+
+.standing-table tbody tr:last-child {
+    border-bottom: none;
+}
+
+.standing-table tbody tr:hover {
+    background-color: var(--highlight-color);
+}
+
+.standing-table tbody tr:hover .standing-col-team {
+    font-weight: 600;
+}
+
+/* ======================================================
+   KOLUMNY – STAŁE SZEROKOŚCI
+====================================================== */
+
+.standing-col-pos {
+    width: 40px;
+}
+
+.standing-col-team {
+    width: 130px;
+    text-align: left;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.standing-col-small {
+    width: 60px;
+}
+
+.standing-col-goals {
+    width: 70px;
+}
+
+/* ======================================================
+   GRUPY (A, B, C…)
+====================================================== */
+
+.standing-group {
+    margin: 24px 0 8px;
+    text-align: center;
+    font-size: 18px;
+    font-weight: 600;
+}
+
+/* ======================================================
+   STANDINGS – POINTS HIGHLIGHT
+====================================================== */
+
+.standing-col-points {
+    font-weight: 700;
+    color: #1f5fbf;
+    background-color: rgba(74, 144, 226, 0.06);
+}
+
+
+@media (min-width: 769px) {
+
+    .standing-table th,
+    .standing-table td {
+        font-size: 14px;
+        padding: 10px 8px;
+    }
+
+    .standing-group {
+        font-size: 20px;
+    }
+
+    .standing-table-wrapper {
+        max-width: 1000px;
+        margin-left: auto;
+        margin-right: auto;
+    }
+
+    .standing-col-team {
+        width: 160px;
+    }
+}
+
+/* ======================================================
+   TEAM – STATS
+====================================================== */
+.team-stats-container{
+    max-width: 1000px;
+    margin: 0 auto;
+}
+.team-stats-mathes-table {
+    margin: 15px auto 15px auto;
+}
+
+.team-stats {
+    margin: 0 auto;
+}
+
+/* ======================================================
+   TEAM STATS – TEAMS HEADER
+====================================================== */
+.team-stats-team-name {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.team-stats-team-name img {
+    width: 60px;
+    height: 60px;
+    object-fit: contain;
+    margin-right: 10px;
+}
+/* ======================================================
+   COMPETITION LOGO – MATCHES TABLES
+====================================================== */
+.competiton-logo {
+    height: 50px;
+    vertical-align: middle;
+    padding: 5px;
+}
+
+.competiton-logo img {
+    height: 100%;
+    width: auto;
+    object-fit: contain;
+    display: block;
+}
+
+.standing-title{
+    font-size: medium;
+}
+
+/* ======================================================
+   STANDINGS – SEASON SELECT
+====================================================== */
+
+.standing-select {
+    display: flex;
+    justify-content: center;
+    margin: 18px 0 24px;
+}
+
+.standing-select form {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+    background: #fff;
+    padding: 10px;
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-sm);
+}
+
+.standing-season-select {
+    min-width: 220px;
+    padding: 10px 12px;
+    border: 1px solid var(--border-muted);
+    border-radius: var(--radius-sm);
+    font-size: 12px;
+    background: #fff;
+}
+
+.standing-button {
+    padding: 10px 18px;
+    border-radius: var(--radius-sm);
+    border: none;
+    background: var(--primary-color);
+    color: #fff;
+    cursor: pointer;
+    font-size: 10px;
+}
+
+.standing-button:hover {
+    background: var(--primary-hover);
+}
+
+@media (max-width: 769px) {
+    .standing-select {
+        margin: 12px 0 18px;
+    }
+
+    .standing-select form {
+        width: auto;           /* zamiast 100% */
+        padding: 6px;
+        gap: 8px;
+    }
+
+    .standing-season-select {
+        min-width: 180px;
+        width: auto;
+        padding: 7px 10px;
+        font-size: 10px;
+    }
+
+    .standing-button {
+        width: auto;
+        padding: 7px 14px;
+        font-size: 10px;
+    }
+}
+
+/* ======================================================
+   PAGE HEADER
+====================================================== */
+
+.page-header {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 10px 0 24px;
+}
+
+.title-link {
+    text-decoration: none;
+}
+
+.title-link h2 {
+    margin: 0;
+    color: var(--text-dark);
+    font-size: 30px;
+    font-weight: 700;
+    letter-spacing: 1px;
+    transition: color .2s ease, transform .2s ease;
+}
+
+.title-link:hover h2 {
+    color: var(--primary-color);
+    transform: scale(1.03);
+}
+
+.title-link:active h2 {
+    transform: scale(1);
+}
+
+@media (max-width: 768px) {
+
+    .page-header {
+        margin-bottom: 18px;
+    }
+
+    .title-link h2 {
+        font-size: 24px;
+    }
+
+}
+
+.error-container {
+    margin: 50px auto;
+    text-align: center;
+}
+
+.error-header {
+    margin-bottom: 20px;
+}
+
+.extra-time {
+    font-size: 0.7em;
+    color: #444;
+    font-weight: normal;
+}
+
+/* ======================================================
+   MATCHES SELECT FORM
+====================================================== */
+
+.matches-select-form {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    flex-wrap: wrap;
+    font-size: 14px;
+    color: var(--text-light);
+}
+
+.matches-select-form span {
+    white-space: nowrap;
+}
+
+.matches-select-form select {
+    appearance: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    min-width: 58px;
+    padding: 5px 28px 5px 10px;
+    border: 1px solid #d5dce5;
+    border-radius: var(--radius-md);
+    background: #fff url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 20 20'%3E%3Cpath fill='%23666' d='M5.5 7.5L10 12l4.5-4.5'/%3E%3C/svg%3E") no-repeat right 8px center;
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--text-dark);
+    cursor: pointer;
+    transition: .2s;
+}
+
+.matches-select-form select:hover {
+    border-color: var(--primary-color);
+}
+
+.matches-select-form select:focus {
+    outline: none;
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 3px rgba(74, 144, 226, .15);
+}
+
+@media (max-width: 768px) {
+
+    .matches-select-form {
+        font-size: 12px;
+        gap: 4px;
+    }
+
+    .matches-select-form select {
+        min-width: 52px;
+        font-size: 12px;
+        padding: 4px 24px 4px 8px;
+    }
+}

@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="pl"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Tabele ligowe</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="../static/styles/main.css" th:href="@{/styles/main.css}">
+</head>
+<body class="standings-page">
+
+<div class="standing-page">
+
+    <header class="page-header">
+        <a th:href="@{/}" class="title-link">
+            <h2>⚽ Typer</h2>
+        </a>
+    </header>
+
+    <h2 class="standing-title" th:if="${competitionName}">
+        <span th:text="${competitionName}">Nazwa tabeli</span><br/>
+        <span th:text="${competitionDates}">Data rozgrywek</span>
+    </h2>
+
+    <div class="standing-select">
+        <form th:action="@{/tabele}" method="get">
+            <input type="hidden" name="competitionId" th:value="${standings.getFirst().competition.id}">
+            <select th:name="startDate" class="standing-season-select">
+                <option value="" hidden>Wybierz sezon</option>
+                <option th:each="season : ${allSeason}" th:value="${season.startDate}"
+                        th:text="|${season.startDate} - ${season.endDate}|"></option>
+            </select>
+            <button type="submit" class="standing-button">Znajdź</button>
+        </form>
+    </div>
+
+    <section class="standing-section"
+             th:each="standing : ${standings}">
+
+        <h2 class="standing-group"
+            th:if="${standing.group}"
+            th:text="${standing.group}">
+            Grupa A
+        </h2>
+
+        <div class="standing-table-wrapper">
+            <table class="standing-table">
+
+                <thead>
+                <tr>
+                    <th class="standing-col-pos">Poz</th>
+                    <th class="standing-col-team">Nazwa</th>
+                    <th class="standing-col-small">M</th>
+                    <th class="standing-col-small standing-col-points">Pkt</th>
+                    <th class="standing-col-small">W</th>
+                    <th class="standing-col-small">R</th>
+                    <th class="standing-col-small">P</th>
+                    <th class="standing-col-goals">GZ</th>
+                    <th class="standing-col-goals">GS</th>
+                    <th class="standing-col-goals">+/-</th>
+                </tr>
+                </thead>
+
+                <tbody>
+                <tr th:each="standingRow : ${standing.standingRows}">
+                    <td class="standing-col-pos" th:text="${standingRow.position}">1</td>
+                    <td class="standing-col-team" th:text="${standingRow.team.name}">Team</td>
+                    <td th:text="${standingRow.playedGames}">0</td>
+                    <td class="standing-col-small standing-col-points"
+                        th:text="${standingRow.points}">Punkty</td>
+                    <td th:text="${standingRow.won}">0</td>
+                    <td th:text="${standingRow.draw}">0</td>
+                    <td th:text="${standingRow.lost}">0</td>
+                    <td th:text="${standingRow.goalsFor}">0</td>
+                    <td th:text="${standingRow.goalsAgainst}">0</td>
+                    <td th:text="${standingRow.goalDifference}">0</td>
+                </tr>
+                </tbody>
+
+            </table>
+        </div>
+
+    </section>
+
+</div>
+</body>
+</html>

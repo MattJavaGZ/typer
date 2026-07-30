@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="pl"
+      xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Typer</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="../static/styles/main.css" th:href="@{/styles/main.css}">
+    <script defer src="../static/scripts/common.js" th:src="@{/scripts/common.js}"></script>
+</head>
+<body>
+
+<header class="page-header">
+    <a th:href="@{/}" class="title-link">
+        <h2>⚽ Typer</h2>
+    </a>
+</header>
+
+<div class="index-card">
+    <h1>Porównanie drużyn</h1>
+
+    <form th:action="@{/porownanie-druzyn}" method="get" onsubmit="return submitCompare()">
+        <input type="hidden" name="teamIds" id="teamsIds">
+
+        <div class="team-row">
+            <input type="text" id="teamSearch" placeholder="Wpisz nazwę druzyny..." autocomplete="off">
+        </div>
+        <div id="suggestions" style="border: 1px solid #ccc; max-height: 150px; overflow-y: auto;">
+        </div>
+
+        <table id="teamTable" class="index-table">
+            <thead>
+            <tr>
+                <th>Nazwa drużyny</th>
+                <th>Skrócona nazwa</th>
+<!--                <th>Symbol</th>-->
+                <th>Logo</th>
+                <th>Usuń</th>
+            </tr>
+            </thead>
+            <tbody></tbody>
+        </table>
+
+        <button type="submit" class="comparison-team-button">Pokaż porównanie</button>
+    </form>
+</div>
+
+<div class="index-card">
+    <h1>Statystyki drużyny</h1>
+
+    <form th:action="@{/druzyny/staty}" method="get" onsubmit="return submitStats()">
+        <input type="hidden" name="teamStatsId" id="teamStatsId">
+
+        <div class="team-row">
+            <input type="text" id="teamStatsSearch" placeholder="Wpisz nazwę druzyny..." autocomplete="off">
+        </div>
+        <div id="suggestion" style="border: 1px solid #ccc; max-height: 150px; overflow-y: auto;">
+        </div>
+
+        <table id="teamStatsTable" class="index-table">
+            <thead>
+            <tr>
+                <th>Nazwa drużyny</th>
+                <th>Skrócona nazwa</th>
+<!--                <th>Symbol</th>-->
+                <th>Logo</th>
+                <th>Usuń</th>
+            </tr>
+            </thead>
+            <tbody></tbody>
+        </table>
+
+        <button type="submit" class="comparison-team-button">Pokaż statystyki</button>
+    </form>
+</div>
+
+<div class="index-card">
+    <h1>Tabele rozgrywek</h1>
+
+    <form action="#" th:action="@{/tabele}">
+        <select name="competitionId" required class="select-competition">
+            <option value="" hidden>Wybierz ligę</option>
+            <option th:each="competition : ${competitions}" th:value="${competition.id}"
+                    th:text="|${competition.code} - ${competition.workingName ?: competition.name}|"></option>
+        </select>
+        <button type="submit" class="comparison-team-button">Pokaż tabele</button>
+    </form>
+</div>
+
+</body>
+</html>

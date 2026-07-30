@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                   https://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd">
+
+    <changeSet id="0003_1" author="Matt">
+<createTable tableName="scores">
+    <column name="id" type="bigint" autoIncrement="true">
+        <constraints nullable="false" primaryKey="true"/>
+    </column>
+    <column name="winner" type="varchar(50)"/>
+    <column name="duration" type="varchar(50)"/>
+
+    <column name="full_home" type="int"/>
+    <column name="full_away" type="int"/>
+
+    <column name="half_home" type="int"/>
+    <column name="half_away" type="int"/>
+
+    <column name="regular_home" type="int"/>
+    <column name="regular_away" type="int"/>
+
+    <column name="extra_home" type="int"/>
+    <column name="extra_away" type="int"/>
+
+    <column name="penalties_home" type="int"/>
+    <column name="penalties_away" type="int"/>
+
+</createTable>
+    </changeSet>
+</databaseChangeLog>

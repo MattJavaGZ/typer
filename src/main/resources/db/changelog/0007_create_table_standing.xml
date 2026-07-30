@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                   https://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd">
+
+    <changeSet id="0007_1" author="Matt">
+        <createTable tableName="standing">
+
+            <column name="standing_id" type="bigint">
+                <constraints nullable="false" primaryKey="true"/>
+            </column>
+            <column name="competition_id" type="bigint">
+                <constraints nullable="false"
+                             foreignKeyName="con_standing_competition"
+                             referencedTableName="competitions"
+                             referencedColumnNames="id"/>
+            </column>
+            <column name="season_id" type="bigint">
+                <constraints nullable="false"
+                             foreignKeyName="con_standing_season"
+                             referencedTableName="seasons"
+                             referencedColumnNames="id"/>
+            </column>
+
+            <column name="standing_type" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="standing_group" type="VARCHAR(255)"/>
+
+        </createTable>
+
+        <addUniqueConstraint
+                tableName="standing"
+                columnNames="competition_id,season_id,standing_type,standing_group"
+                constraintName="uk_standing_business"/>
+    </changeSet>
+</databaseChangeLog>

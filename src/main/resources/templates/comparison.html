@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html lang="pl"
+      xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Porównanie drużyn</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="../static/styles/main.css" th:href="@{/styles/main.css}">
+    <script defer src="../static/scripts/common.js" th:src="@{/scripts/common.js}"></script>
+
+</head>
+<body>
+
+<header class="page-header">
+    <a th:href="@{/}" class="title-link">
+        <h2>⚽ Typer</h2>
+    </a>
+</header>
+<h2>Porównanie drużyn</h2>
+
+
+<div class="comparison-mathes-table">
+
+    <!--    dodany div:-->
+    <div class="last-matches-block">
+
+        <div class="comparison-teams-names">
+            <img src="#" th:src="${teamsCompare.getTeamA().crest}">
+            <p th:text="${teamsCompare.getTeamA().name}">Druzyna A</p>
+        </div>
+
+        <table class="responsive-table last-matches-table ">
+            <tbody>
+            <tr th:each="match : ${teamsCompare.lastMatchesStatTeamA.lastMatchesTeam}"
+                class="last-match-row">
+
+<!--                <td th:text="${#temporals.format(match.utcDate, 'dd-MM-yyyy')}" class="math-date">data</td>-->
+<!--                <td th:text="${match.homeTeam.name}"-->
+<!--                    th:classappend="${match.homeTeam.equals(teamsCompare.teamA) ? 'bold' : ''}"></td>-->
+<!--                <td th:text="${match.score.fullTime.home}"-->
+<!--                    th:classappend="${@compareService.matchResultVeryfi(teamsCompare.teamA, match).name().toLowerCase()}"></td>-->
+<!--                <td th:text="${match.score.fullTime.away}"-->
+<!--                    th:classappend="${@compareService.matchResultVeryfi(teamsCompare.teamA, match).name().toLowerCase()}"></td>-->
+<!--                <td th:text="${match.awayTeam.name}"-->
+<!--                    th:classappend="${match.awayTeam.equals(teamsCompare.teamA) ? 'bold' : ''}"></td>-->
+<!--                <td class="competiton-logo"><img th:src="${match.competition.emblem}" alt="logo"></td>-->
+
+                <td th:text="${#temporals.format(match.utcDate, 'dd-MM-yyyy')}" class="math-date">data</td>
+                <td th:text="${match.homeTeam.name}"
+                    th:classappend="${match.homeTeam.equals(teamsCompare.teamA) ? 'bold' : ''}"></td>
+
+                <td th:utext="${match.score.regularTime.home == null ? match.score.fullTime.home :
+                (match.score.penalties.home == null ? match.score.fullTime.home + ' <span class=&quot;extra-time&quot;>dogr.</span>' :
+                 match.score.regularTime.home + ' (' + match.score.fullTime.home + ')')}"
+                    th:classappend="${@compareService.matchResultVeryfi(teamsCompare.teamA, match).name().toLowerCase()}"></td>
+
+                <td th:utext="${match.score.regularTime.away == null ? match.score.fullTime.away :
+                (match.score.penalties.away == null ? match.score.fullTime.away + ' <span class=&quot;extra-time&quot;>dogr.</span>' :
+                match.score.regularTime.away + ' (' + match.score.fullTime.away + ')')}"
+                    th:classappend="${@compareService.matchResultVeryfi(teamsCompare.teamA, match).name().toLowerCase()}"></td>
+
+                <td th:text="${match.awayTeam.name}"
+                    th:classappend="${match.awayTeam.equals(teamsCompare.teamA) ? 'bold' : ''}"></td>
+                <td class="competiton-logo"><img th:src="${match.competition.emblem}" alt="logo"></td>
+            </tr>
+            </tbody>
+        </table>
+
+        <button type="button"
+                class="show-more-matches"
+                onclick="toggleMatches(this)">
+            Pokaż więcej
+        </button>
+
+        <div class="comparison-stats-card">
+            <div class="stats-title">
+<!--                <p th:text="|Staty z ostatnich ${teamsCompare.lastMatchesStatTeamA.lastMatchesTeam.size()} meczów|">Staty z 10-->
+<!--                    meczów</p>-->
+
+                <!-- inlineowy formularz: "Staty z ostatnich [select] meczów" -->
+                <form th:action="@{/porownanie-druzyn}" method="get" class="matches-select-form" th:object="${teamsCompare}">
+                    <input type="hidden" name="teamIds" th:value="${teamsCompare.teamA.id}" />
+                    <input type="hidden" name="teamIds" th:value="${teamsCompare.teamB.id}" />
+                    <input th:if="${matchesToStatsB != null}" type="hidden" name="matchesToStatsB" th:value="${matchesToStatsB}" />
+
+                    <span>Staty z ostatnich&nbsp;</span>
+                    <select id="matchesToStatsA" name="matchesToStatsA" onchange="this.form.submit()">
+                        <option th:each="i : ${#numbers.sequence(1, @matchService.countMatchesByTeamIdMax10(teamsCompare.teamA.id))}"
+                                th:value="${i}"
+                                th:text="${i}"
+                                th:selected="${i == (matchesToStatsA == null || matchesToStatsA > 10 ?
+                                @matchService.countMatchesByTeamIdMax10(teamsCompare.teamA.id) : matchesToStatsA)}">
+                        </option>
+                    </select>
+                    <span>&nbsp;meczów</span>
+                    <noscript><button type="submit">Pokaż</button></noscript>
+                </form>
+            </div>
+
+            <div class="stats-left">
+                <p th:text="|Wygrane: ${teamsCompare.lastMatchesStatTeamA.win}|"></p>
+                <p th:text="|Remisy: ${teamsCompare.lastMatchesStatTeamA.draw}|"></p>
+                <p th:text="|Przegrane: ${teamsCompare.lastMatchesStatTeamA.lost}|"></p>
+
+                <p th:text="|BTTS: ${teamsCompare.lastMatchesStatTeamA.btts} /
+                ${matchesToStatsA == null || matchesToStatsA > 10 ? teamsCompare.lastMatchesStatTeamA.lastMatchesTeam.size() : matchesToStatsA} |"></p>
+                <p th:text="|Czyste konta: ${teamsCompare.lastMatchesStatTeamA.noGoalsConceded} /
+                ${matchesToStatsA == null || matchesToStatsA > 10 ? teamsCompare.lastMatchesStatTeamA.lastMatchesTeam.size() : matchesToStatsA}|"></p>
+            </div>
+
+            <div class="stats-right">
+                <p th:text="|Gole strzelone: ${teamsCompare.lastMatchesStatTeamA.goalsScored}|"></p>
+                <p th:text="|Gole stracone: ${teamsCompare.lastMatchesStatTeamA.goalsConceded}|"></p>
+
+                <p th:text="|Śr strzelonych goli: ${#numbers.formatDecimal(teamsCompare.lastMatchesStatTeamA.goalsScoredAverage,1,1)}|"></p>
+                <p th:text="|Śr straconych goli: ${#numbers.formatDecimal(teamsCompare.lastMatchesStatTeamA.goalsConcededAverage,1,1)}|"></p>
+                <p th:text="|Sr wszystkich goli: ${#numbers.formatDecimal(teamsCompare.lastMatchesStatTeamA.goalsAverage,1,1)}|"></p>
+
+
+            </div>
+
+            <div class="team-form-wrapper">
+            <span th:text="|Forma z ostatnich ${teamsCompare.lastMatchesStatTeamA.lastResults.size()} meczów|"
+                  class="team-form-label">Forma ostatnie mecze:</span>
+
+                <div class="form-bar">
+            <span th:each="result : ${teamsCompare.lastMatchesStatTeamA.lastResults}"
+                  class="form-dot"
+                  th:classappend="'form-' + ${#strings.toLowerCase(result.name())}">
+            </span>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <div class="last-matches-block">
+        <div class="comparison-teams-names">
+            <img src="#" th:src="${teamsCompare.teamB.crest}">
+            <p th:text="${teamsCompare.teamB.name}">Druzyna A</p>
+        </div>
+        <table class="responsive-table last-matches-table ">
+            <tbody>
+            <tr th:each="match : ${teamsCompare.lastMatchesStatTeamB.lastMatchesTeam}"
+                class="last-match-row">
+
+<!--                <td th:text="${#temporals.format(match.utcDate, 'dd-MM-yyyy')}" class="math-date">data</td>-->
+<!--                <td th:text="${match.homeTeam.name}"-->
+<!--                    th:classappend="${match.homeTeam.equals(teamsCompare.teamB) ? 'bold' : ''}"></td>-->
+<!--                <td th:text="${match.score.fullTime.home}"-->
+<!--                    th:classappend="${@compareService.matchResultVeryfi(teamsCompare.teamB, match).name().toLowerCase()}"></td>-->
+<!--                <td th:text="${match.score.fullTime.away}"-->
+<!--                    th:classappend="${@compareService.matchResultVeryfi(teamsCompare.teamB, match).name().toLowerCase()}"></td>-->
+<!--                <td th:text="${match.awayTeam.name}"-->
+<!--                    th:classappend="${match.awayTeam.equals(teamsCompare.teamB) ? 'bold' : ''}"></td>-->
+<!--                <td class="competiton-logo"><img th:src="${match.competition.emblem}" alt="logo"></td>-->
+
+                <td th:text="${#temporals.format(match.utcDate, 'dd-MM-yyyy')}" class="math-date">data</td>
+                <td th:text="${match.homeTeam.name}"
+                    th:classappend="${match.homeTeam.equals(teamsCompare.teamB) ? 'bold' : ''}"></td>
+
+                <td th:utext="${match.score.regularTime.home == null ? match.score.fullTime.home :
+                (match.score.penalties.home == null ? match.score.fullTime.home + ' <span class=&quot;extra-time&quot;>dogr.</span>' :
+                 match.score.regularTime.home + ' (' + match.score.fullTime.home + ')')}"
+                    th:classappend="${@compareService.matchResultVeryfi(teamsCompare.teamB, match).name().toLowerCase()}"></td>
+
+                <td th:utext="${match.score.regularTime.away == null ? match.score.fullTime.away :
+                (match.score.penalties.away == null ? match.score.fullTime.away + ' <span class=&quot;extra-time&quot;>dogr.</span>' : match.score.regularTime.away + ' (' + match.score.fullTime.away + ')')}"
+                    th:classappend="${@compareService.matchResultVeryfi(teamsCompare.teamB, match).name().toLowerCase()}"></td>
+
+                <td th:text="${match.awayTeam.name}"
+                    th:classappend="${match.awayTeam.equals(teamsCompare.teamB) ? 'bold' : ''}"></td>
+                <td class="competiton-logo"><img th:src="${match.competition.emblem}" alt="logo"></td>
+
+            </tr>
+
+            </tbody>
+
+        </table>
+
+        <button type="button"
+                class="show-more-matches"
+                onclick="toggleMatches(this)">
+            Pokaż więcej
+        </button>
+
+        <div class="comparison-stats-card">
+
+                <div class="stats-title">
+<!--                    <p th:text="|Staty z ostatnich ${teamsCompare.lastMatchesStatTeamB.lastMatchesTeam.size()} meczów|">Staty z 10-->
+<!--                        meczów</p>-->
+
+                <!-- inlineowy formularz: "Staty z ostatnich [select] meczów" -->
+                <form th:action="@{/porownanie-druzyn}" method="get" class="matches-select-form" th:object="${teamsCompare}">
+                    <input type="hidden" name="teamIds" th:value="${teamsCompare.teamA.id}" />
+                    <input type="hidden" name="teamIds" th:value="${teamsCompare.teamB.id}" />
+                    <input th:if="${matchesToStatsA != null}" type="hidden" name="matchesToStatsA" th:value="${matchesToStatsA}" />
+
+
+                    <span>Staty z ostatnich&nbsp;</span>
+                    <select id="matchesToStatsB" name="matchesToStatsB" onchange="this.form.submit()">
+                        <option th:each="i : ${#numbers.sequence(1, @matchService.countMatchesByTeamIdMax10(teamsCompare.teamB.id))}"
+                                th:value="${i}"
+                                th:text="${i}"
+                                th:selected="${i == (matchesToStatsB == null || matchesToStatsB > 10 ?
+                                @matchService.countMatchesByTeamIdMax10(teamsCompare.teamB.id) : matchesToStatsB)}">
+                        </option>
+                    </select>
+                    <span>&nbsp;meczów</span>
+                    <noscript><button type="submit">Pokaż</button></noscript>
+                </form>
+            </div>
+
+            <div class="stats-left">
+                <p th:text="|Wygrane: ${teamsCompare.lastMatchesStatTeamB.win}|"></p>
+                <p th:text="|Remisy: ${teamsCompare.lastMatchesStatTeamB.draw}|"></p>
+                <p th:text="|Przegrane: ${teamsCompare.lastMatchesStatTeamB.lost}|"></p>
+
+                <p th:text="|BTTS: ${teamsCompare.lastMatchesStatTeamB.btts} /
+                ${matchesToStatsB == null || matchesToStatsB > 10?
+                teamsCompare.lastMatchesStatTeamB.lastMatchesTeam.size() : matchesToStatsB} |"></p>
+                <p th:text="|Czyste konta: ${teamsCompare.lastMatchesStatTeamB.noGoalsConceded} /
+                ${matchesToStatsB == null || matchesToStatsB > 10?
+                teamsCompare.lastMatchesStatTeamB.lastMatchesTeam.size() : matchesToStatsB}|"></p>
+            </div>
+
+            <div class="stats-right">
+                <p th:text="|Gole strzelone: ${teamsCompare.lastMatchesStatTeamB.goalsScored}|"></p>
+                <p th:text="|Gole stracone: ${teamsCompare.lastMatchesStatTeamB.goalsConceded}|"></p>
+
+                <p th:text="|Śr strzelonych goli: ${#numbers.formatDecimal(teamsCompare.lastMatchesStatTeamB.goalsScoredAverage,1,1)}|"></p>
+                <p th:text="|Śr straconych goli: ${#numbers.formatDecimal(teamsCompare.lastMatchesStatTeamB.goalsConcededAverage,1,1)}|"></p>
+                <p th:text="|Sr wszystkich goli: ${#numbers.formatDecimal(teamsCompare.lastMatchesStatTeamB.goalsAverage,1,1)}|"></p>
+
+
+            </div>
+
+            <div class="team-form-wrapper">
+            <span th:text="|Forma z ostatnich ${teamsCompare.lastMatchesStatTeamB.lastResults.size()} meczów|"
+                  class="team-form-label">Forma ostatnie mecze:</span>
+
+                <div class="form-bar">
+            <span th:each="result : ${teamsCompare.lastMatchesStatTeamB.lastResults}"
+                  class="form-dot"
+                  th:classappend="'form-' + ${#strings.toLowerCase(result.name())}">
+            </span>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+
+<div class="comparison-H2H-matches">
+    <h2>H2H</h2>
+    <table class="responsive-table">
+        <tbody>
+        <tr th:each="match : ${teamsCompare.headToHead.lastH2HMatches}">
+
+            <td th:text="${#temporals.format(match.utcDate, 'dd-MM-yyyy')}" class="math-date">data</td>
+            <td th:text="${match.homeTeam.name}"></td>
+            <td th:text="${match.score.fullTime.home}"></td>
+            <td th:text="${match.score.fullTime.away}"></td>
+            <td th:text="${match.awayTeam.name}"></td>
+            <td class="competiton-logo"><img th:src="${match.competition.emblem}" alt="logo"></td>
+
+        </tr>
+        </tbody>
+    </table>
+
+</div>
+<div class="comparison-H2H-stats">
+
+    <h2 class="h2h-title">Bilans H2H</h2>
+
+    <div class="h2h-row">
+
+        <img src="#" th:src="${teamsCompare.teamA.crest}">
+
+        <div class="comparison-H2H-stats-details">
+            <p th:text="|Mecze: ${teamsCompare.headToHead.teamAWin} - ${teamsCompare.headToHead.draw} -
+    ${teamsCompare.headToHead.teamBWin}|">bilans</p>
+            <p th:text="|Bilans bramek: ${teamsCompare.headToHead.teamAGoalsScored} -
+    ${teamsCompare.headToHead.teamBGoalsScored}|">Bilans bramek</p>
+        </div>
+
+        <img src="#" th:src="${teamsCompare.teamB.crest}">
+    </div>
+</div>
+</body>
+</html>

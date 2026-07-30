@@ -1,0 +1,15 @@
+spring:
+  application:
+    name: typer
+  jpa:
+    hibernate:
+      ddl-auto: validate
+
+  liquibase:
+    change-log: classpath:db/changelog/master.xml
+
+app:
+  api:
+    url: https://api.football-data.org/v4/
+    key: ${API_KEY}
+
