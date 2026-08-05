@@ -8,6 +8,18 @@ spring:
   liquibase:
     change-log: classpath:db/changelog/master.xml
 
+  web:
+    resources:
+      cache:
+        cachecontrol:
+          max-age: 30d
+          cache-public: true
+      chain:
+        strategy:
+          content:
+            enabled: true
+            paths: "/**"
+
 app:
   api:
     url: https://api.football-data.org/v4/

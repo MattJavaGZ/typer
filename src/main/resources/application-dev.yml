@@ -2,7 +2,7 @@ spring:
   datasource:
     url: jdbc:mysql://localhost:3306/testdb
     username: root
-    password: admin
+    password: ${DATABASE_KEY_DEV}
 
 #    url: jdbc:h2:mem:test
 #    username: admin
@@ -10,4 +10,3 @@ spring:
 
   liquibase:
     contexts: dev
-#    clear-checksums: true
