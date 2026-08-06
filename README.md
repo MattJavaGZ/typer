@@ -1,3 +1,18 @@
+# ⚽ Typer
+
+## 📋 O Projekcie
+
+**Typer** to aplikacja webowa do analizy wyników piłkarskich i tworzenia porównań między drużynami.
+Integruje się z API [football-data.org](https://www.football-data.org/) aby pobierać dane o meczach, drużynach i sezonach.
+
+- **Język**: Java 21
+- **Framework**: Spring Boot 4.0.3
+- **Baza danych**: MySQL (produkcja) / H2 (development)
+- **Szablony**: Thymeleaf
+- **ORM**: JPA/Hibernate
+- **Migracje**: Liquibase
+
+
 # 🔐 Konfiguracja API Key
 
 ## application.yml
