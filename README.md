@@ -18,7 +18,7 @@ spring:
   datasource:
     url: jdbc:mysql://mysql:3306/typer
     username: ${DATABASE_USERNAME}  # ← przeczytana ze zmiennej środowiskowej
-    password: ${DATABASE_KEY}       # ← przeczytana ze zmiennej środowiskowej
+    password: ${DATABASE_PASSWORD}       # ← przeczytana ze zmiennej środowiskowej
 ```
 
 
