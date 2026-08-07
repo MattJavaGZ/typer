@@ -26,7 +26,7 @@ app:
 
 # 🔐 Konfiguracja DATABASE
 
-## application.prod.yml
+## application-prod.yml
 
 ```yaml
 spring:

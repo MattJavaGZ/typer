@@ -10,3 +10,8 @@ spring:
 
   liquibase:
     contexts: dev
+
+app:
+  api:
+    url: https://api.football-data.org/v4/
+    key: test-key
