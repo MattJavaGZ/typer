@@ -9,8 +9,7 @@ RUN mvn package -DskipTests
 # Runtime stage
 FROM eclipse-temurin:21-jre
 WORKDIR /app
-RUN useradd -m -u 1000 appuser
-COPY --from=maven_build --chown=appuser:appuser /build/target/typer-*.jar app.jar
-USER appuser
+COPY --from=maven_build --chown=1000:1000 /build/target/typer-*.jar app.jar
+USER 1000
 EXPOSE 8080
 ENTRYPOINT ["java", "-jar", "app.jar"]
