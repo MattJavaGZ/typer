@@ -17,7 +17,9 @@ public class ImportScheduler {
 
     @Async
     @Scheduled(cron = "0 30 1 * * *")
-    public void nightyImport() {
+    @Scheduled(cron = "0 0 6 * * *")
+    @Scheduled(cron = "0 0 16 * * *")
+    public void autoImport() {
 
         log.info("Rozpoczęto cykliczny import danych");
         dataImportService.getAll();
