@@ -9,12 +9,24 @@
     <meta name="description" content="Typer służy do porównywania drużyn pod zakłady bukmacherskie.
     W jednym oknie wyniki drużyn, statystyki, bezpośrednie mecze h2h">
 
-    <link rel="icon" type="image/png" sizes="48x48" href="/images/favicon.png">
+    <link rel="icon" type="image/png" sizes="48x48" th:href="@{/images/favicon.png}">
 
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="../static/styles/main.css" th:href="@{/styles/main.css}">
     <script defer src="../static/scripts/common.js" th:src="@{/scripts/common.js}"></script>
 </head>
+
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-DH7K747WYG"></script>
+<script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+
+    gtag('config', 'G-DH7K747WYG');
+</script>
+
+
 <body>
 
 <header class="page-header">
