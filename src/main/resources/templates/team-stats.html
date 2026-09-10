@@ -7,6 +7,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="../static/styles/main.css" th:href="@{/styles/main.css}">
     <script defer src="../static/scripts/common.js" th:src="@{/scripts/common.js}"></script>
+    <script defer src="../static/scripts/cookies.js" th:src="@{/scripts/cookies.js}"></script>
 </head>
 <body>
 <div class="team-stats-container">
@@ -121,6 +122,33 @@
 
 
             </div>
+        </div>
+    </div>
+</div>
+
+<!-- Cookie banner -->
+<div id="cookie-banner" class="cookie-banner">
+    <div class="cookie-content">
+        <div class="cookie-text">
+            <strong>🍪 Prywatność i cookies</strong>
+            <p>
+                Typer korzysta z Google Analytics, aby analizować sposób korzystania
+                z serwisu i ulepszać jego działanie.
+                Więcej informacji znajdziesz w
+                <a th:href="@{/polityka-prywatnosci}">
+                    Polityce prywatności
+                </a>.
+            </p>
+        </div>
+
+        <div class="cookie-buttons">
+            <button id="cookie-accept" class="cookie-btn cookie-accept">
+                Akceptuję
+            </button>
+
+            <button id="cookie-reject" class="cookie-btn cookie-reject">
+                Odrzucam
+            </button>
         </div>
     </div>
 </div>
