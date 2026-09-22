@@ -5,6 +5,7 @@ import matt.pas.typer.domain.compare.dto.HeadToHeadDto;
 import matt.pas.typer.domain.compare.dto.LastMatchesStatDto;
 import matt.pas.typer.domain.match.MatchMapper;
 import matt.pas.typer.domain.match.MatchRepository;
+import matt.pas.typer.domain.match.AvailableMatchesCounter;
 import matt.pas.typer.domain.match.dto.MatchDto;
 import matt.pas.typer.domain.score.Score;
 import matt.pas.typer.domain.score.dto.ScoreDto;
@@ -24,78 +25,20 @@ import java.util.List;
 @Service
 public class CompareService {
 
-    public final static Pageable LAST_10 = PageRequest.of(0, 10);
-    final static Pageable LAST_5 = PageRequest.of(0, 5);
+    private final static Pageable LAST_10 = PageRequest.of(0, 10);
+    private final static Pageable LAST_5 = PageRequest.of(0, 5);
 
     private final MatchRepository matchRepository;
     private final TeamRepository teamRepository;
+    private final AvailableMatchesCounter availableMatchesCounter;
 
-    public CompareService(MatchRepository matchRepository, TeamRepository teamRepository) {
+
+    public CompareService(MatchRepository matchRepository, TeamRepository teamRepository,
+                          AvailableMatchesCounter availableMatchesCounter) {
         this.matchRepository = matchRepository;
         this.teamRepository = teamRepository;
+        this.availableMatchesCounter = availableMatchesCounter;
     }
-
-
-//    public CompareDto getTeamsCompare(List<Long> teamIds) {
-//
-//        final CompareDto compare = new CompareDto();
-//
-//        final List<TeamDto> teams = teamRepository.findAllById(teamIds).stream()
-//                .map(TeamMapper::mapToTeamDto)
-//                .toList();
-//
-//        compare.setTeamA(teams.get(0));
-//        compare.setTeamB(teams.get(1));
-//
-//        final LastMatchesStatDto lastMatchesStatTeamA = getLastMatchesStat(compare.getTeamA().getId(), LAST_10);
-//        final LastMatchesStatDto lastMatchesStatTeamB = getLastMatchesStat(compare.getTeamB().getId(), LAST_10);
-//
-//        compare.setLastMatchesStatTeamA(lastMatchesStatTeamA);
-//        compare.setLastMatchesStatTeamB(lastMatchesStatTeamB);
-//
-//        final HeadToHeadDto headToHead = getHeadToHead(compare.getTeamA(), compare.getTeamB());
-//        compare.setHeadToHead(headToHead);
-//
-//        return compare;
-//    }
-//
-////    private Pageable getPageable(int matches) {
-////        return  PageRequest.of(0, matches);
-////    }
-//
-//    public LastMatchesStatDto getLastMatchesStat(Long teamId, Pageable pageable) {
-//        final LastMatchesStatDto teamStats = new LastMatchesStatDto();
-//
-//        final TeamDto team = teamRepository.findById(teamId).map(TeamMapper::mapToTeamDto).orElseThrow(
-//                () -> new TeamNotFoundException("Brak wybranej drużyny"));
-//
-//        final List<MatchDto> lastMaches = matchRepository.findAllByHomeTeam_IdOrAwayTeam_IdOrderByUtcDateDesc(teamId, teamId, pageable)
-//                .stream()
-//                .map(MatchMapper::mapToDto)
-//                .toList();
-//
-//        teamStats.setLastMatchesTeam(lastMaches);
-//
-//        getAndSetTeamResults(team, lastMaches, teamStats);
-//
-//        teamStats.setGoalsScored(getTeamGolasScored(team, lastMaches));
-//
-//        teamStats.setGoalsConceded(getTeamGolasConceded(team, lastMaches));
-//
-//        teamStats.setGoalsScoredAverage((double) teamStats.getGoalsScored() / lastMaches.size());
-//
-//        teamStats.setGoalsConcededAverage((double) teamStats.getGoalsConceded() / lastMaches.size());
-//
-//        teamStats.setGoalsAverage((double) (teamStats.getGoalsScored() + teamStats.getGoalsConceded()) / lastMaches.size() );
-//
-//        teamStats.setLastResults(getLastResults(team, lastMaches));
-//
-//        teamStats.setBtts(getBtts(lastMaches));
-//
-//        teamStats.setNoGoalsConceded(getNoGoalsConceded(team, lastMaches));
-//
-//        return teamStats;
-//    }
 
 public CompareDto getTeamsCompare(List<Long> teamIds, Integer matchesToStatsA, Integer matchesToStatsB) {
 
@@ -136,7 +79,9 @@ public CompareDto getTeamsCompare(List<Long> teamIds, Integer matchesToStatsA, I
                 .toList();
 
         final List<MatchDto> lastMatchesToStats;
-        if (matchesToStats == null || lastMaches.size() < matchesToStats) lastMatchesToStats = lastMaches;
+        if (matchesToStats == null || lastMaches.size() < matchesToStats) {
+            lastMatchesToStats = lastMaches.subList(0, availableMatchesCounter.countMatchesByTeamIdWithLimit(teamId, AvailableMatchesCounter.DEFAULT_MATCHES_STATS_SELECT));
+        }
         else lastMatchesToStats = lastMaches.subList(0, matchesToStats);
 
         teamStats.setLastMatchesTeam(lastMaches);

@@ -87,11 +87,13 @@
 
                     <span>Staty z ostatnich&nbsp;</span>
                     <select id="matchesToStatsA" name="matchesToStatsA" onchange="this.form.submit()">
-                        <option th:each="i : ${#numbers.sequence(1, @matchService.countMatchesByTeamIdMax10(teamsCompare.teamA.id))}"
+                        <option th:each="i : ${#numbers.sequence(1, @availableMatchesCounter.countMatchesByTeamIdWithLimit(teamsCompare.teamA.id,
+                                                                 T(matt.pas.typer.domain.match.AvailableMatchesCounter).MAX_MATCHES_STATS_SELECT))}"
                                 th:value="${i}"
                                 th:text="${i}"
                                 th:selected="${i == (matchesToStatsA == null || matchesToStatsA > 10 ?
-                                @matchService.countMatchesByTeamIdMax10(teamsCompare.teamA.id) : matchesToStatsA)}">
+                                @availableMatchesCounter.countMatchesByTeamIdWithLimit(teamsCompare.teamA.id,
+                                                                T(matt.pas.typer.domain.match.AvailableMatchesCounter).DEFAULT_MATCHES_STATS_SELECT) : matchesToStatsA)}">
                         </option>
                     </select>
                     <span>&nbsp;meczów</span>
@@ -189,10 +191,7 @@
         <div class="comparison-stats-card">
 
                 <div class="stats-title">
-<!--                    <p th:text="|Staty z ostatnich ${teamsCompare.lastMatchesStatTeamB.lastMatchesTeam.size()} meczów|">Staty z 10-->
-<!--                        meczów</p>-->
 
-                <!-- inlineowy formularz: "Staty z ostatnich [select] meczów" -->
                 <form th:action="@{/porownanie-druzyn}" method="get" class="matches-select-form" th:object="${teamsCompare}">
                     <input type="hidden" name="teamIds" th:value="${teamsCompare.teamA.id}" />
                     <input type="hidden" name="teamIds" th:value="${teamsCompare.teamB.id}" />
@@ -201,11 +200,13 @@
 
                     <span>Staty z ostatnich&nbsp;</span>
                     <select id="matchesToStatsB" name="matchesToStatsB" onchange="this.form.submit()">
-                        <option th:each="i : ${#numbers.sequence(1, @matchService.countMatchesByTeamIdMax10(teamsCompare.teamB.id))}"
+                        <option th:each="i : ${#numbers.sequence(1, @availableMatchesCounter.countMatchesByTeamIdWithLimit
+                        (teamsCompare.teamB.id,T(matt.pas.typer.domain.match.AvailableMatchesCounter).MAX_MATCHES_STATS_SELECT))}"
                                 th:value="${i}"
                                 th:text="${i}"
                                 th:selected="${i == (matchesToStatsB == null || matchesToStatsB > 10 ?
-                                @matchService.countMatchesByTeamIdMax10(teamsCompare.teamB.id) : matchesToStatsB)}">
+                                        @availableMatchesCounter.countMatchesByTeamIdWithLimit
+                                        (teamsCompare.teamB.id,T(matt.pas.typer.domain.match.AvailableMatchesCounter).DEFAULT_MATCHES_STATS_SELECT) : matchesToStatsB)}">
                         </option>
                     </select>
                     <span>&nbsp;meczów</span>
