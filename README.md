@@ -5,6 +5,8 @@
 **Typer** to aplikacja webowa wspierająca analizę meczów piłkarskich pod zakłady bukmacherskie poprzez porównywanie statystyk drużyn, 
             analizę ich ostatnich spotkań oraz bezpośrednich starć H2H. Dostępne są również tabele rozgrywek.
 
+**### Produkcja: www.typero.pl**
+
 ## ✨ Funkcjonalności
 
 - **Porównanie dwóch drużyn**

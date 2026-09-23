@@ -1056,6 +1056,18 @@ button {
         font-size: 16px;
     }
 
+    .cookie-banner {
+        left: 50%;
+        right: auto;
+        transform: translateX(-50%);
+        max-width: 900px;
+        width: calc(100% - 120px);
+    }
+
+    .cookie-text {
+        text-align: center;
+    }
+
     .privacy-policy {
         padding-left: 20%;
         padding-right: 20%;
