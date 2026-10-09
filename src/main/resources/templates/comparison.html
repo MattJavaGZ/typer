@@ -107,9 +107,12 @@
                 <p th:text="|Przegrane: ${teamsCompare.lastMatchesStatTeamA.lost}|"></p>
 
                 <p th:text="|BTTS: ${teamsCompare.lastMatchesStatTeamA.btts} /
-                ${matchesToStatsA == null || matchesToStatsA > 10 ? teamsCompare.lastMatchesStatTeamA.lastMatchesTeam.size() : matchesToStatsA} |"></p>
+                ${matchesToStatsA == null || matchesToStatsA > 10 ? @availableMatchesCounter.countMatchesByTeamIdWithLimit(
+                teamsCompare.teamA.id, T(matt.pas.typer.domain.match.AvailableMatchesCounter).DEFAULT_MATCHES_STATS_SELECT) : matchesToStatsA} |"></p>
+
                 <p th:text="|Czyste konta: ${teamsCompare.lastMatchesStatTeamA.noGoalsConceded} /
-                ${matchesToStatsA == null || matchesToStatsA > 10 ? teamsCompare.lastMatchesStatTeamA.lastMatchesTeam.size() : matchesToStatsA}|"></p>
+                ${matchesToStatsA == null || matchesToStatsA > 10 ? @availableMatchesCounter.countMatchesByTeamIdWithLimit(
+                teamsCompare.teamA.id, T(matt.pas.typer.domain.match.AvailableMatchesCounter).DEFAULT_MATCHES_STATS_SELECT) : matchesToStatsA}|"></p>
             </div>
 
             <div class="stats-right">
@@ -221,10 +224,13 @@
 
                 <p th:text="|BTTS: ${teamsCompare.lastMatchesStatTeamB.btts} /
                 ${matchesToStatsB == null || matchesToStatsB > 10?
-                teamsCompare.lastMatchesStatTeamB.lastMatchesTeam.size() : matchesToStatsB} |"></p>
+                @availableMatchesCounter.countMatchesByTeamIdWithLimit(
+                teamsCompare.teamA.id, T(matt.pas.typer.domain.match.AvailableMatchesCounter).DEFAULT_MATCHES_STATS_SELECT) : matchesToStatsB} |"></p>
+
                 <p th:text="|Czyste konta: ${teamsCompare.lastMatchesStatTeamB.noGoalsConceded} /
                 ${matchesToStatsB == null || matchesToStatsB > 10?
-                teamsCompare.lastMatchesStatTeamB.lastMatchesTeam.size() : matchesToStatsB}|"></p>
+                @availableMatchesCounter.countMatchesByTeamIdWithLimit(
+                teamsCompare.teamA.id, T(matt.pas.typer.domain.match.AvailableMatchesCounter).DEFAULT_MATCHES_STATS_SELECT) : matchesToStatsB}|"></p>
             </div>
 
             <div class="stats-right">
