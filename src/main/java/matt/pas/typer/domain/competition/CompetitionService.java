@@ -16,8 +16,9 @@ public class CompetitionService {
     }
 
     public List<CompetitionStandingDto> findAllCompetitions() {
-       return competitionRepository.findAll().stream()
+        return competitionRepository.findAll().stream()
                 .map(CompetitionMapper::mapToStandingDto)
+                .sorted()
                 .toList();
     }
 }

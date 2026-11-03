@@ -1,6 +1,6 @@
 package matt.pas.typer.domain.competition.dto;
 
-public class CompetitionStandingDto {
+public class CompetitionStandingDto implements Comparable<CompetitionStandingDto> {
 
     private Long id;
     private String name;
@@ -47,5 +47,11 @@ public class CompetitionStandingDto {
     public void setWorkingName(String workingName) {
         this.workingName = workingName;
     }
+
+    @Override
+    public int compareTo(CompetitionStandingDto o) {
+        return - o.workingName.compareTo(this.workingName);
+    }
+
 
 }
