@@ -108,9 +108,13 @@
                     <p th:text="|Przegrane: ${lastMatchesStat.lost}|"></p>
 
                     <p th:text="|BTTS: ${lastMatchesStat.btts} /
-                ${matchesToStats == null || matchesToStats > 10 ? lastMatchesStat.lastMatchesTeam.size() : matchesToStats} |"></p>
+                ${matchesToStats == null || matchesToStats > 10 ? @availableMatchesCounter.countMatchesByTeamIdWithLimit(
+                team.id, T(matt.pas.typer.domain.match.AvailableMatchesCounter).DEFAULT_MATCHES_STATS_SELECT) : matchesToStats} |"></p>
+
+
                     <p th:text="|Czyste konta: ${lastMatchesStat.noGoalsConceded} /
-                ${matchesToStats == null || matchesToStats > 10  ? lastMatchesStat.lastMatchesTeam.size() : matchesToStats}|"></p>
+                ${matchesToStats == null || matchesToStats > 10  ? @availableMatchesCounter.countMatchesByTeamIdWithLimit(
+                team.id, T(matt.pas.typer.domain.match.AvailableMatchesCounter).DEFAULT_MATCHES_STATS_SELECT) : matchesToStats}|"></p>
                 </div>
 
                 <div class="stats-right">
